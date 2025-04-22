@@ -23,4 +23,13 @@ public class HibernateUtil {
         getSessionFactory().close();
     }
 
+    public static SessionFactory getTestSessionFactory() {
+        try {
+            return new Configuration().configure("hibernate-test.cfg.xml").buildSessionFactory();
+        } catch (Throwable ex) {
+            throw new ExceptionInInitializerError(ex);
+        }
+    }
+
+
 }

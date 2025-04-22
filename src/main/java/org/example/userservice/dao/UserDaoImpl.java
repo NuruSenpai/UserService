@@ -3,6 +3,7 @@ package org.example.userservice.dao;
 import org.example.userservice.entity.User;
 import org.example.userservice.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,17 @@ import java.util.List;
 
 public class UserDaoImpl implements UserDao {
     private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
+
+    private final SessionFactory sessionFactory;
+
+    public UserDaoImpl() {
+        this.sessionFactory = org.example.userservice.util.HibernateUtil.getSessionFactory();
+    }
+
+    public UserDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
 
 
     @Override
