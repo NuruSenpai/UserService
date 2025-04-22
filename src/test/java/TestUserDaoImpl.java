@@ -62,8 +62,10 @@ public class TestUserDaoImpl {
     void clearDatabase() {
         try (Session session = testSessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
-            session.createQuery("delete from User").executeUpdate();
+            session.createNativeQuery("TRUNCATE TABLE users RESTART IDENTITY").executeUpdate();
             tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
