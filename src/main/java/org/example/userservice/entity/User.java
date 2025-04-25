@@ -29,16 +29,13 @@ private LocalDateTime createdAt = LocalDateTime.now();
         this.name = name;
         this.email = email;
         this.age = age;
-        this.createdAt = createdAt;
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+
 
     public String getName() {
         return name;
@@ -68,9 +65,7 @@ private LocalDateTime createdAt = LocalDateTime.now();
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+
 
     @Override
     public String toString() {

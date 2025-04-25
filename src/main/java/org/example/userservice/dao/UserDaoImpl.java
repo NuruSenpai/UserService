@@ -3,7 +3,6 @@ package org.example.userservice.dao;
 import org.example.userservice.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,14 +25,12 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void save(User user) {
-        Transaction tx = null;
         try (Session session = sessionFactory.openSession()){
-            tx = session.beginTransaction();
+            session.beginTransaction().commit();
             session.save(user);
-            tx.commit();
         } catch (Exception e) {
-            if (tx != null) tx.rollback();
-            logger.error("ошибка при создании пользователя", e);
+            logger.error("User creation failed.", e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -53,30 +50,25 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void update(User user) {
-        Transaction tx = null;
         try (Session session = sessionFactory.openSession()){
-            tx = session.beginTransaction();
+            session.beginTransaction().commit();
             session.update(user);
-            tx.commit();
         }catch (Exception e) {
-            if (tx != null) tx.rollback();
-            logger.error("Ошибка при изменении пользователя", e);
+            logger.error("User update failed.", e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public void delete(long id) {
-        Transaction tx = null;
         try (Session session = sessionFactory.openSession()){
-            tx = session.beginTransaction();
-            User user = session.get(User.class, id);
-            if (user != null) {
-                session.delete(user);
-            }
-            tx.commit();
+           User user = session.get(User.class, id);
+           if (user == null) return;
+           session.beginTransaction().commit();
+           session.delete(user);
         }catch (Exception e) {
-            if (tx != null) tx.rollback();
-            logger.error("Ошибка при удалени пользователя", e);
+            logger.error("Error deleting user.", e);
+            throw new RuntimeException(e);
         }
     }
 }
